@@ -5,6 +5,7 @@ import com.vi.StoryHelperAuth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +22,7 @@ public class UserService implements UserDetailsService {
     public String create(String username, String password) {
         User user = User.builder()
                 .username(username)
-                .password(password)
+                .password(new BCryptPasswordEncoder().encode(password))
                 .authorities("user")
                 .build();
 

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,21 +24,23 @@ public class UserResource {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestParam("username") String username, @RequestParam("password") String password) {
-        User user = userService.loadUserByUsername(username);
+    @PostMapping(
+            value = "/login",
+            produces = "application/json")
+    public ResponseEntity<User> login() {
+        User user = userService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         if (user == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        if (passwordEncoder.matches(password, user.getPassword()))
-            return ResponseEntity.ok()
-                    .body(User.builder()
-                            .username(user.getUsername())
-                            .authorities(user.getAuthorities().stream().map(el -> el.getAuthority()).collect(Collectors.joining("&")))
-                            .build());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        return ResponseEntity.ok()
+                .body(User.builder()
+                        .username(user.getUsername())
+                        .authorities(user.getAuthorities().stream().map(el -> el.getAuthority()).collect(Collectors.joining("&")))
+                        .build());
     }
 
-    @PostMapping("/create")
+    @PostMapping(
+            value = "/create",
+            produces = "application/json")
     public String create(@RequestParam("username") String username, @RequestParam("password") String password) {
         return userService.create(username, password);
     }
