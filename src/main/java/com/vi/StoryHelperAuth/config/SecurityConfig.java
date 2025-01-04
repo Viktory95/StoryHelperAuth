@@ -4,7 +4,6 @@ import com.vi.StoryHelperAuth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -21,7 +20,7 @@ public class SecurityConfig {
     private UserService userService;
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userService);
         provider.setPasswordEncoder(passwordEncoder());
@@ -45,18 +44,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public CqlSessionFactoryBean session() {
-
-        CqlSessionFactoryBean session = new CqlSessionFactoryBean();
-        session.setContactPoints("127.0.0.1:9042");
-        session.setKeyspaceName("story_helper_auth");
-        session.setLocalDatacenter("datacenter1");
-
-        return session;
     }
 }
