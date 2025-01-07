@@ -1,8 +1,14 @@
 spring:
   application:
     name: story_helper_auth
+  data:
+    cassandra:
+      contact-points: 172.17.0.2:9042
+      keyspace-name: story_helper_auth
+      local-datacenter: datacenter1
 
 server:
   port: 8080
   servlet:
     context-path: /story_helper_auth
+

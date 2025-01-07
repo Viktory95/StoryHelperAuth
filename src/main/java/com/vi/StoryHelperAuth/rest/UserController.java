@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1")
 @Slf4j
-public class UserResource {
+public class UserController {
     @Autowired
     private UserService userService;
     @Autowired

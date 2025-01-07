@@ -1,0 +1,4 @@
+--run docker container
+docker run --name story-helper-auth -p 8080:8080 -d story-helper-auth
+--get address
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' story-helper-auth

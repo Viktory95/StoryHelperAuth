@@ -1,12 +1,12 @@
-run cassandra:
-docker run --name cassandra -p 127.0.0.1:9042:9042 -p 127.0.0.1:9160:9160   -d cassandra 
+--run cassandra:
+docker run --name cassandra -p 127.0.0.1:9042:9042 -p 127.0.0.1:9160:9160   -d cassandra
 
-get DC name:
+--get DC name:
 use system;
 select data_center from local;
 
 
-cassandra creation DB:
+--cassandra creation DB:
 
 docker exec -it cassandra bash
 
